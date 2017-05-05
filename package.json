@@ -1,0 +1,22 @@
+{
+  "name": "insightful-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app/index.js",
+  "scripts": {
+    "start": "node --harmony-async-await ./app/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nybblr/insightful-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nybblr/insightful-backend/issues"
+  },
+  "homepage": "https://github.com/nybblr/insightful-backend#readme",
+  "dependencies": {
+    "firebase": "^3.9.0"
+  }
+}
