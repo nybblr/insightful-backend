@@ -26,8 +26,8 @@ pdfStatsRef.on("child_added", function(entry) {
 
 
 handRaisesRef.on("child_added", function(entry) {
-    let item = entry.val()
-    let userId = item.userId;
+    let handRaise = entry.val()
+    let userId = handRaise.userId;
     let userHandRaiseRef = db.ref('users/' + userId + '/handRaiseCount');
     userHandRaiseRef.once('value').then(function(snapshot) {
       var count = snapshot.val();
@@ -61,5 +61,7 @@ handRaisesRef.on("child_added", function(entry) {
         hrbsCount.set(count + 1);
         hrbsSection.set(section);
       });
+      let hrbsHandRaises = db.ref(`handRaisesBySection/${sectionID}/handRaises`)
+      hrbsHandRaises.push().set(handRaise)
     });
 });
