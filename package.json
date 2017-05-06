@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/nybblr/insightful-backend#readme",
   "dependencies": {
-    "firebase": "^3.9.0"
+    "firebase": "^3.9.0",
+    "underscore.string": "^3.3.4"
   }
 }
