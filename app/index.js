@@ -13,4 +13,34 @@ let db = firebase.database();
 
 let pdfStatsRef = db.ref('pdfStats');
 
-pdfStatsRef.once('value', console.log);
+// pdfStatsRef.once('value', console.log);
+
+let userId = 1;
+
+pdfStatsRef.orderByChild("userId")
+    .startAt(userId)
+    .endAt(userId)
+    .once("value", function(data) {
+        latestTimestamp = 0;
+        latestItem = { pageLabel: NaN }
+        data.forEach(function (entry) {
+            item = entry.val()
+            timestamp = item.startedAt;
+            console.log(timestamp + ': page ' + item.pageNumber + ', page ' + item.pageLabel);
+            if (timestamp > latestTimestamp) {
+                latestItem = item;
+            } 
+        });
+        console.log('Latest page is ' + latestItem.pageLabel);
+    });
+
+pdfStatsRef.on("child_added", function(entry) {
+    let item = entry.val()
+    let timestamp = item.startedAt;
+    let userId = item.userId;
+    console.log(timestamp + ': user=' + userId + ', page=' + item.pageNumber + ', page=' + item.pageLabel);
+    let userPdfStatRef = db.ref('users/' + userId + '/pdfStat');
+    userPdfStatRef.set(item);
+});
+
+
