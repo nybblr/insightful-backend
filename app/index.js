@@ -14,6 +14,7 @@ let db = firebase.database();
 
 let pdfStatsRef = db.ref('pdfStats');
 let handRaisesRef = db.ref('handRaises');
+let usersRef = db.ref('users');
 
 pdfStatsRef.on("child_added", function(entry) {
     let item = entry.val()
@@ -24,6 +25,29 @@ pdfStatsRef.on("child_added", function(entry) {
     userPdfStatRef.set(item);
 });
 
+pdfStatsRef.on("child_added", function(childData) {
+  usersRef.once("value").then(function(data) {
+    let totalPages = 0;
+    let numPages = 0;
+    data.forEach(function (entry) {
+      user = entry.val();
+      pdfStat = user.pdfStat;
+      if (pdfStat) {
+        pageNumber = user.pdfStat.pageNumber;
+        totalPages += pageNumber;
+        numPages++;
+        console.log('Adding user ' + user.name + ', page: ' + pageNumber);
+      } else {
+        console.log('Skipping user ' + user.name);
+      }
+    });
+    let averagePage = Math.round(totalPages/numPages);
+    console.log('Average page: ' + averagePage);
+    let classStatsRef = db.ref('/classStats/current').set({
+      'averagePage': averagePage,
+    });
+  });
+});
 
 handRaisesRef.on("child_added", function(entry) {
     let handRaise = entry.val()
